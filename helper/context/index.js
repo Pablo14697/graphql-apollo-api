@@ -12,8 +12,7 @@ module.exports.verifyUser = async req => {
         token,
         process.env.JWT_SECRET_KEY || "mysecretkey"
       );
-      console.log("aca payload");
-      console.log(payload);
+
       req.email = payload.email;
     }
   } catch (error) {

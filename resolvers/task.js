@@ -14,8 +14,7 @@ module.exports = {
       const task = { ...input, id: String(tasks.length + 1) };
 
       tasks.push(task);
-      console.log("here the array");
-      console.log(tasks);
+
       return task;
     }
   },

@@ -24,7 +24,6 @@ const apolloServer = new ApolloServer({
   resolvers,
   context: async ({ req }) => {
     await verifyUser(req);
-    console.log("joder en context");
     return { email: req.email };
   }
 });

@@ -39,7 +39,6 @@ module.exports = {
     },
 
     signup: async (_, { input }) => {
-      console.log("aca paso");
       try {
         const user = await User.findOne({ email: input.email });
         if (user) {

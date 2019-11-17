@@ -4,15 +4,21 @@ const { combineResolvers } = require("graphql-resolvers");
 const { users, tasks } = require("../constants");
 const { isAuthenticated } = require("./middleware");
 const User = require("../database/models/user");
+const Task = require("../database/models/task");
+
 module.exports = {
   Query: {
-    users: () => {
-      return users;
-    },
-    user: combineResolvers(isAuthenticated, (_, { id }, { email }) => {
+    user: combineResolvers(isAuthenticated, async (_, __, { email }) => {
       console.log("===", email);
-
-      return users.find(user => user.id === id);
+      try {
+        const user = await User.findOne({ email });
+        if (!user) {
+          throw new Error("User not found");
+        }
+        return user;
+      } catch (error) {
+        throw error;
+      }
     })
   },
   Mutation: {
@@ -55,6 +61,14 @@ module.exports = {
     }
   },
   User: {
-    tasks: ({ id }) => tasks.filter(task => task.id === id)
+    tasks: async ({ id }) => {
+      try {
+        const tasks = await Task.find({ user: id });
+        return tasks;
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    }
   }
 };
